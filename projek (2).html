@@ -67,18 +67,17 @@
         </div>
         <div class="text-left hidden sm:block">
             <p class="text-[9px] text-amber-500 uppercase tracking-widest font-semibold">Memainkan Lagu</p>
-            <p class="text-xs text-amber-100 font-medium tracking-wide">Lagu Pilihan</p>
+            <p class="text-xs text-amber-100 font-medium tracking-wide">Melodi Romantis</p>
         </div>
         <button id="playPauseBtn" class="w-8 h-8 rounded-full bg-amber-700 hover:bg-amber-600 text-white flex items-center justify-center transition duration-200 shadow-md">
             <i id="playIcon" class="fas fa-play text-xs pl-0.5"></i>
         </button>
     </div>
 
-    <!-- ELEMENT AUDIO FAIL (MENGGUNAKAN PAUTAN DIRECT DRIVE) -->
-    <audio id="bgMusic" loop preload="auto">
-    <source src="https://docs.google.com/uc?export=download&id=1iwYe5aIaiHVPtkefHxBXf1fhB_E3Yeji" type="audio/mp3">
-</audio>
-
+    <!-- PAUTAN AUDIO DIUBAH KEPADA DIRECT HOSTING (BUKAN DRIVE) -->
+    <audio id="bgMusic" loop preload="auto" crossorigin="anonymous">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
     </audio>
 
     <!-- KAD JEMPUTAN UTAMA -->
@@ -255,7 +254,7 @@
         <p class="text-[10px] text-amber-600 tracking-widest font-royal uppercase">Beras kunyit kami taburi, terima kasih sudi kemari.</p>
     </footer>
 
-    <!-- LOGIK JAVASCRIPT KAWALAN AUDIO GOOGLE DRIVE + ANIMASI -->
+    <!-- LOGIK AUDIO STABIL DAN COUNTDOWN -->
     <script>
         const bgMusic = document.getElementById("bgMusic");
         const welcomeOverlay = document.getElementById("welcomeOverlay");
@@ -264,25 +263,22 @@
         const playIcon = document.getElementById("playIcon");
         const musicDisc = document.getElementById("musicDisc");
 
-        // Set volume awal
-        bgMusic.volume = 1.0;
+        // Memastikan pelayar bersedia memuat fail audio
+        bgMusic.load();
 
-        // Tindakan apabila butang "Buka Undangan" ditekan
         openInvitationBtn.addEventListener("click", () => {
-            // Memulakan mainan audio fail Drive
+            // Mainkan muzik sebaik sahaja butang ditekan
             bgMusic.play().then(() => {
                 playIcon.className = "fas fa-pause text-xs";
                 musicDisc.classList.add("spinning");
             }).catch((error) => {
-                console.log("Sistem pelayar menyekat autoplay: ", error);
+                console.log("Pelayar menyekat audio:", error);
             });
 
-            // Sembunyikan penghadang overlay
             welcomeOverlay.classList.add("opacity-0", "pointer-events-none");
             document.body.classList.remove("no-scroll");
         });
 
-        // Tindakan butang kawalan manual Play/Pause
         playPauseBtn.addEventListener("click", () => {
             if (bgMusic.paused) {
                 bgMusic.play();
