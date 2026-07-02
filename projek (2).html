@@ -41,7 +41,7 @@
 </head>
 <body class="text-amber-100 min-h-screen flex flex-col items-center justify-between p-4 md:p-8 select-none no-scroll">
 
-    <!-- HALAMAN PENGHADANG (WELCOME OVERLAY) -->
+    <!-- HALAMAN PENGHADANG -->
     <div id="welcomeOverlay" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#0b0c10] bg-opacity-98 transition-all duration-700 ease-in-out p-4">
         <div class="text-center space-y-6 max-w-sm p-8 rounded-3xl border border-amber-900 border-opacity-40 bg-[#0f1115] bg-opacity-90 shadow-2xl relative">
             <div class="mx-auto w-12 h-12 text-amber-500 opacity-80">
@@ -67,14 +67,14 @@
         </div>
         <div class="text-left hidden sm:block">
             <p class="text-[9px] text-amber-500 uppercase tracking-widest font-semibold">Memainkan Lagu</p>
-            <p class="text-xs text-amber-100 font-medium tracking-wide">1 Saf Di Belakangku</p>
+            <p class="text-xs text-amber-100 font-medium tracking-wide">1 Saf Di Belakangku - Arvia Dwi</p>
         </div>
         <button id="playPauseBtn" class="w-8 h-8 rounded-full bg-amber-700 hover:bg-amber-600 text-white flex items-center justify-center transition duration-200 shadow-md">
             <i id="playIcon" class="fas fa-play text-xs pl-0.5"></i>
         </button>
     </div>
 
-    <!-- YOUTUBE IFRAME (DISEBUNYIKAN SEPENUHNYA) -->
+    <!-- YOUTUBE IFRAME (DISEBUNYIKAN) -->
     <div class="pointer-events-none absolute w-0 h-0 opacity-0 overflow-hidden">
         <div id="youtubePlayer"></div>
     </div>
@@ -253,7 +253,7 @@
         <p class="text-[10px] text-amber-600 tracking-widest font-royal uppercase">Beras kunyit kami taburi, terima kasih sudi kemari.</p>
     </footer>
 
-    <!-- LOGIK JAVASCRIPT GABUNGAN YOUTUBE API + ANIMASI -->
+    <!-- LOGIK SKRIPT JAVASCRIPT YOUTUBE API -->
     <script>
         // Memuatkan YouTube Iframe Player API secara dinamik
         var tag = document.createElement('script');
@@ -264,19 +264,19 @@
         var player;
         var isPlayerReady = false;
 
+        // Fungsi dipanggil secara automatik apabila API YouTube sedia
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('youtubePlayer', {
                 height: '0',
                 width: '0',
-                videoId: 'ACEEIS_gCDc', 
+                videoId: 'ACEEIS_gCDc', // ID dari link youtube anda
                 playerVars: {
                     'autoplay': 0,
                     'loop': 1,
-                    'playlist': 'ACEEIS_gCDc', 
+                    'playlist': 'ACEEIS_gCDc', // Diperlukan untuk tetapan fungsi loop
                     'controls': 0,
                     'showinfo': 0,
-                    'rel': 0,
-                    'playsinline': 1 
+                    'rel': 0
                 },
                 events: {
                     'onReady': onPlayerReady
@@ -286,7 +286,6 @@
 
         function onPlayerReady(event) {
             isPlayerReady = true;
-            player.setVolume(100); 
         }
 
         const welcomeOverlay = document.getElementById("welcomeOverlay");
@@ -295,26 +294,19 @@
         const playIcon = document.getElementById("playIcon");
         const musicDisc = document.getElementById("musicDisc");
 
-        // Fungsi Buka Undangan & Paksa Audio Aktif
+        // Klik butang Buka Undangan untuk memainkan YouTube
         openInvitationBtn.addEventListener("click", () => {
+            welcomeOverlay.classList.add("opacity-0", "pointer-events-none");
+            document.body.classList.remove("no-scroll");
+
             if (isPlayerReady && player) {
                 player.playVideo();
-                
-                setTimeout(() => {
-                    if(player.isMuted()) {
-                        player.unMute();
-                    }
-                }, 300);
-
                 playIcon.className = "fas fa-pause text-xs";
                 musicDisc.classList.add("spinning");
             }
-
-            welcomeOverlay.classList.add("opacity-0", "pointer-events-none");
-            document.body.classList.remove("no-scroll");
         });
 
-        // Butang Pemain Manual (Play/Pause)
+        // Pengendali butang kawalan manual Play/Pause
         playPauseBtn.addEventListener("click", () => {
             if (isPlayerReady && player) {
                 var playerState = player.getPlayerState();
@@ -330,7 +322,7 @@
             }
         });
 
-        // COUNTDOWN TIMER
+        // TIMEOUT COUNTDOWN 
         const targetDate = new Date("Aug 8, 2026 09:00:00").getTime();
         const countdownInterval = setInterval(function() {
             const now = new Date().getTime();
