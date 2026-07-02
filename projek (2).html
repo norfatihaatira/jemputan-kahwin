@@ -6,7 +6,7 @@
     <title>Warkah Undangan Diraja | Fazlin & Firdaus</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts (Luxury & Classic Vibe) -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -15,16 +15,10 @@
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: #0b0c10;
-            /* Latar belakang bertekstur damask halus yang sangat mewah */
             background-image: url('https://www.transparenttextures.com/patterns/black-thread.png');
         }
-        .font-royal {
-            font-family: 'Cinzel', serif;
-        }
-        .font-cursive {
-            font-family: 'Great Vibes', cursive;
-        }
-        /* Efek Kilauan Emas (Royal Gold Metallic Gradient) */
+        .font-royal { font-family: 'Cinzel', serif; }
+        .font-cursive { font-family: 'Great Vibes', cursive; }
         .gold-gradient-text {
             background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
             -webkit-background-clip: text;
@@ -33,62 +27,68 @@
         .gold-gradient-bg {
             background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
         }
-        /* Bingkai Kerawang & Bunga */
         .royal-border {
             border: 4px double #b38728;
             box-shadow: 0 0 20px rgba(179, 135, 40, 0.2), inset 0 0 30px rgba(179, 135, 40, 0.15);
         }
-        /* Animasi pusingan perlahan untuk piring lagu */
         @keyframes spin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
-        .spinning {
-            animation: spin 4s linear infinite;
-        }
+        .spinning { animation: spin 4s linear infinite; }
+        .no-scroll { overflow: hidden; }
     </style>
 </head>
-<body class="text-amber-100 min-h-screen flex flex-col items-center justify-between p-4 md:p-8 select-none">
+<body class="text-amber-100 min-h-screen flex flex-col items-center justify-between p-4 md:p-8 select-none no-scroll">
 
-    <!-- FLOATING ROYAL AUDIO PLAYER -->
-    <div class="fixed bottom-6 right-6 z-50 bg-black bg-opacity-90 border border-[#b38728] rounded-full py-2 px-4 flex items-center space-x-3 shadow-xl backdrop-blur-md">
-        <!-- Elemen Piring Lagu Mini -->
+    <!-- HALAMAN PENGHADANG (WELCOME OVERLAY) -->
+    <div id="welcomeOverlay" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#0b0c10] bg-opacity-98 transition-all duration-700 ease-in-out p-4">
+        <div class="text-center space-y-6 max-w-sm p-8 rounded-3xl border border-amber-900 border-opacity-40 bg-[#0f1115] bg-opacity-90 shadow-2xl relative">
+            <div class="mx-auto w-12 h-12 text-amber-500 opacity-80">
+                <i class="fas fa-crown text-3xl gold-gradient-text"></i>
+            </div>
+            <div class="space-y-1">
+                <p class="font-royal text-xs text-amber-500 tracking-widest uppercase">Walimatulurus</p>
+                <h2 class="font-cursive text-3xl gold-gradient-text">Fazlin & Firdaus</h2>
+            </div>
+            <p class="text-[11px] text-amber-200 font-light tracking-wide leading-relaxed">
+                Kehadiran anda bersama alunan restu amat kami hargai dalam majlis penyatupaduan ini.
+            </p>
+            <button id="openInvitationBtn" class="w-full py-3 px-6 rounded-xl gold-gradient-bg text-black font-semibold tracking-widest font-royal text-xs shadow-lg transform hover:scale-105 transition duration-300 uppercase">
+                <i class="far fa-envelope-open mr-2"></i> Buka Undangan
+            </button>
+        </div>
+    </div>
+
+    <!-- FLOATING AUDIO PLAYER -->
+    <div class="fixed bottom-6 right-6 z-40 bg-black bg-opacity-90 border border-[#b38728] rounded-full py-2 px-4 flex items-center space-x-3 shadow-xl backdrop-blur-md">
         <div id="musicDisc" class="w-8 h-8 rounded-full bg-gradient-to-r from-amber-700 to-amber-900 border border-amber-300 flex items-center justify-center">
             <i class="fas fa-music text-xs text-amber-200"></i>
         </div>
         <div class="text-left hidden sm:block">
             <p class="text-[9px] text-amber-500 uppercase tracking-widest font-semibold">Memainkan Lagu</p>
-            <p class="text-xs text-amber-100 font-medium tracking-wide">Satu Saf Di Belakang</p>
+            <p class="text-xs text-amber-100 font-medium tracking-wide">Lagu Pilihan</p>
         </div>
         <button id="playPauseBtn" class="w-8 h-8 rounded-full bg-amber-700 hover:bg-amber-600 text-white flex items-center justify-center transition duration-200 shadow-md">
             <i id="playIcon" class="fas fa-play text-xs pl-0.5"></i>
         </button>
     </div>
 
-    <!-- AUDIO ELEMENT (Instrumental / Cover Terpilih) -->
-    <audio id="bgMusic" loop>
-        <source src="https://drive.google.com/file/d/1iwYe5aIaiHVPtkefHxBXf1fhB_E3Yeji/view?usp=drivesdk" type="audio/mpeg">
-        <!-- Nota: Anda boleh gantikan pautan src di atas dengan fail audio direct-link .mp3 lagu "Satu Saf Di Belakang" anda sendiri jika ada -->
+    <!-- ELEMENT AUDIO FAIL (MENGGUNAKAN PAUTAN DIRECT DRIVE) -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://docs.google.com/uc?export=download&id=1iwYe5aIaiHVPtkefHxBXf1fhB_E3Yeji" type="audio/mp3">
+        Your browser does not support the audio element.
     </audio>
 
     <!-- KAD JEMPUTAN UTAMA -->
     <main class="w-full max-w-xl bg-[#0f1115] bg-opacity-95 my-4 rounded-3xl p-6 md:p-10 royal-border relative overflow-hidden">
-        
-        <!-- Sudut Kerawang Bunga Atas Kiri -->
         <div class="absolute top-0 left-0 w-20 h-20 opacity-40 border-t-4 border-l-4 border-amber-600 rounded-tl-2xl"></div>
-        <!-- Sudut Kerawang Bunga Atas Kanan -->
         <div class="absolute top-0 right-0 w-20 h-20 opacity-40 border-t-4 border-r-4 border-amber-600 rounded-tr-2xl"></div>
-        <!-- Sudut Kerawang Bunga Bawah Kiri -->
         <div class="absolute bottom-0 left-0 w-20 h-20 opacity-40 border-b-4 border-l-4 border-amber-600 rounded-bl-2xl"></div>
-        <!-- Sudut Kerawang Bunga Bawah Kanan -->
         <div class="absolute bottom-0 right-0 w-20 h-20 opacity-40 border-b-4 border-r-4 border-amber-600 rounded-br-2xl"></div>
 
-        <!-- ISI KANDUNGAN -->
         <div class="space-y-8 relative z-10 text-center">
-            
-            <!-- LOGO / LAMBANG KEBANGSAAN DIRAJA (EMAS) -->
             <div class="mx-auto w-16 h-16 flex items-center justify-center text-amber-400 opacity-90">
-                <!-- Simbol Kerawang Mahkota / Floral -->
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="currentColor" class="w-full h-full">
                     <path d="M32 2C24 14 12 16 12 28c0 12 8 22 20 34 12-12 20-22 20-28 0-12-12-14-20-26zm0 12c3 5 8 9 8 14 0 6-4 10-8 10s-8-4-8-10c0-5 5-9 8-14z" fill="url(#goldGradient)"/>
                     <defs>
@@ -101,7 +101,6 @@
                 </svg>
             </div>
 
-            <!-- TAJUK UTAMA -->
             <div class="space-y-2">
                 <h1 class="font-royal text-2xl md:text-3xl font-bold tracking-widest gold-gradient-text uppercase">Warkah Undangan</h1>
                 <p class="font-royal text-xs text-amber-500 tracking-widest uppercase">Majlis Akad Nikah</p>
@@ -112,7 +111,6 @@
                 </div>
             </div>
 
-            <!-- PANTUN PEMBUKA -->
             <div class="py-2 px-4 max-w-sm mx-auto border-t border-b border-amber-900 border-opacity-60">
                 <div class="font-cursive text-2xl text-amber-300 space-y-1">
                     <p>Sireh berlipat sireh pinang,</p>
@@ -122,12 +120,10 @@
                 </div>
             </div>
 
-            <!-- MUKADDIMAH -->
             <p class="text-xs text-amber-200 font-light leading-relaxed max-w-md mx-auto px-2">
                 Asalkan rona kain sutera, jua indahnya tenunan tekad; dengan penuh rasa kesyukuran ke hadrat Ilahi dan berkat merestui sunnah Rasul-Nya, kami dengan segala hormat dan takzimnya menitipkan warkah, mengutus salam ingatan buat seisi keluarga, sanak saudara, sahabat handai, serta sekalian taulan.
             </p>
 
-            <!-- NAMA TUAN RUMAH -->
             <div class="space-y-1 bg-amber-950 bg-opacity-30 py-3 px-4 rounded-xl border border-amber-900 border-opacity-40 max-w-md mx-auto">
                 <p class="text-[10px] text-amber-500 uppercase tracking-widest">Dengan segala hormat dan takzimnya, saya:</p>
                 <h3 class="font-royal text-base md:text-lg font-semibold text-white tracking-wide">Ahmad Abdullah bin Abdul Rahman</h3>
@@ -136,7 +132,6 @@
                 </p>
             </div>
 
-            <!-- PASANGAN RAJA SEHARI -->
             <div class="py-4 space-y-2 relative">
                 <h2 class="font-cursive text-4xl md:text-5xl gold-gradient-text drop-shadow">Fazlin Azliana</h2>
                 <div class="flex items-center justify-center space-x-4">
@@ -147,7 +142,6 @@
                 <h2 class="font-cursive text-4xl md:text-5xl gold-gradient-text drop-shadow">Muhammad Firdaus</h2>
             </div>
 
-            <!-- GARISAN PEMISAH FLUID -->
             <div class="flex items-center justify-center text-amber-600 opacity-60">
                 <i class="fas fa-leaf mx-2 text-xs"></i>
                 <span class="h-[1px] w-24 bg-amber-600"></span>
@@ -156,11 +150,9 @@
                 <i class="fas fa-leaf mx-2 text-xs"></i>
             </div>
 
-            <!-- DETIK KEJADIAN & COUNTDOWN -->
             <div class="space-y-4">
                 <h4 class="font-royal text-xs text-amber-400 uppercase tracking-widest font-semibold"><i class="far fa-clock mr-2"></i>Detik Indah Kejadian</h4>
                 
-                <!-- Countdown Teks Emas -->
                 <div id="countdown" class="grid grid-cols-4 gap-3 max-w-xs mx-auto text-center">
                     <div class="bg-black bg-opacity-40 p-2 rounded-lg border border-amber-900 border-opacity-40">
                         <span id="days" class="block font-royal text-xl font-bold gold-gradient-text">00</span>
@@ -180,7 +172,6 @@
                     </div>
                 </div>
 
-                <!-- Butiran Masa -->
                 <div class="text-sm space-y-1.5 pt-2">
                     <p class="font-semibold text-white tracking-wide">Sabtu, 08 Ogos 2026</p>
                     <p class="text-xs text-amber-400">24 Safar 1448H</p>
@@ -189,7 +180,6 @@
                 </div>
             </div>
 
-            <!-- TEMPAT BERSEMAYAM (LOKASI) -->
             <div class="space-y-3 pt-2">
                 <h4 class="font-royal text-xs text-amber-400 uppercase tracking-widest font-semibold"><i class="fas fa-map-marker-alt mr-2"></i>Tempat Bersemayam Majlis</h4>
                 <div class="bg-black bg-opacity-40 p-4 rounded-xl border border-amber-900 border-opacity-40 max-w-md mx-auto space-y-3">
@@ -198,7 +188,6 @@
                         Qariah Kampung Kubang Pasu, Simpang Tiga Sungai Limau,<br>06910 Yan, Kedah.
                     </p>
                     
-                    <!-- Peta Navigasi Butang Luxury -->
                     <div class="grid grid-cols-2 gap-3 pt-2 max-w-xs mx-auto">
                         <a href="https://waze.com/ul?q=Masjid%20Sharifah%20Zahrah%20Yan%20Kedah" target="_blank" class="flex items-center justify-center space-x-1 border border-amber-600 bg-transparent hover:bg-amber-600 hover:text-black text-amber-400 font-medium py-2 px-3 rounded-lg text-xs transition duration-300">
                             <i class="fab fa-waze"></i>
@@ -212,7 +201,6 @@
                 </div>
             </div>
 
-            <!-- PANTUN PENUTUP & DOA -->
             <div class="text-center space-y-3 pt-4 border-t border-amber-900 border-opacity-40">
                 <div class="font-cursive text-2xl text-amber-300 space-y-1">
                     <p>Bunga asoka di atas dahan, harum melati hiasan sanggul;</p>
@@ -223,19 +211,17 @@
                 </p>
             </div>
 
-            <!-- RSVP CONTACTS -->
             <div class="space-y-3 pt-2">
                 <h4 class="font-royal text-xs text-amber-400 uppercase tracking-widest font-semibold"><i class="far fa-envelope-open mr-2"></i>Hubungi Kami (R.S.V.P)</h4>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-md mx-auto">
                     
-                    <!-- RSVP 1 -->
                     <div class="bg-black bg-opacity-30 p-3 rounded-xl border border-amber-900 border-opacity-30 flex items-center justify-between text-left">
                         <div>
                             <p class="text-xs font-semibold text-white">Ahmad Abdullah</p>
                             <p class="text-[11px] text-amber-500">018-4605428</p>
                         </div>
                         <div class="flex space-x-1.5">
-                            <a href="https://wa.me/60184605428?text=Saya%20mengesahkan%20kehadiran%20ke%20Majlis%20Akad%20Nikah" target="_blank" class="bg-emerald-700 hover:bg-emerald-600 text-white p-2 rounded-lg text-xs transition duration-200">
+                            <a href="https://wa.me/60184605428?text=Saya%20mengesahkan%20kehadiran" target="_blank" class="bg-emerald-700 hover:bg-emerald-600 text-white p-2 rounded-lg text-xs transition duration-200">
                                 <i class="fab fa-whatsapp"></i>
                             </a>
                             <button onclick="copyNumber('0184605428')" class="bg-zinc-800 hover:bg-zinc-700 text-amber-400 p-2 rounded-lg text-xs transition duration-200">
@@ -244,14 +230,13 @@
                         </div>
                     </div>
 
-                    <!-- RSVP 2 -->
                     <div class="bg-black bg-opacity-30 p-3 rounded-xl border border-amber-900 border-opacity-30 flex items-center justify-between text-left">
                         <div>
                             <p class="text-xs font-semibold text-white">Fatin</p>
                             <p class="text-[11px] text-amber-500">019-7840719</p>
                         </div>
                         <div class="flex space-x-1.5">
-                            <a href="https://wa.me/60197840719?text=Saya%20mengesahkan%20kehadiran%20ke%20Majlis%20Akad%20Nikah" target="_blank" class="bg-emerald-700 hover:bg-emerald-600 text-white p-2 rounded-lg text-xs transition duration-200">
+                            <a href="https://wa.me/60197840719?text=Saya%20mengesahkan%20kehadiran" target="_blank" class="bg-emerald-700 hover:bg-emerald-600 text-white p-2 rounded-lg text-xs transition duration-200">
                                 <i class="fab fa-whatsapp"></i>
                             </a>
                             <button onclick="copyNumber('0197840719')" class="bg-zinc-800 hover:bg-zinc-700 text-amber-400 p-2 rounded-lg text-xs transition duration-200">
@@ -262,20 +247,55 @@
 
                 </div>
             </div>
-
         </div>
     </main>
 
-    <!-- FOOTER UTAMA -->
     <footer class="text-center py-4 w-full z-10">
         <p class="text-[10px] text-amber-600 tracking-widest font-royal uppercase">Beras kunyit kami taburi, terima kasih sudi kemari.</p>
     </footer>
 
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- LOGIK JAVASCRIPT KAWALAN AUDIO GOOGLE DRIVE + ANIMASI -->
     <script>
-        // COUNTDOWN TIMER (Target: 8 Ogos 2026, Jam 9:00 AM)
-        const targetDate = new Date("Aug 8, 2026 09:00:00").getTime();
+        const bgMusic = document.getElementById("bgMusic");
+        const welcomeOverlay = document.getElementById("welcomeOverlay");
+        const openInvitationBtn = document.getElementById("openInvitationBtn");
+        const playPauseBtn = document.getElementById("playPauseBtn");
+        const playIcon = document.getElementById("playIcon");
+        const musicDisc = document.getElementById("musicDisc");
 
+        // Set volume awal
+        bgMusic.volume = 1.0;
+
+        // Tindakan apabila butang "Buka Undangan" ditekan
+        openInvitationBtn.addEventListener("click", () => {
+            // Memulakan mainan audio fail Drive
+            bgMusic.play().then(() => {
+                playIcon.className = "fas fa-pause text-xs";
+                musicDisc.classList.add("spinning");
+            }).catch((error) => {
+                console.log("Sistem pelayar menyekat autoplay: ", error);
+            });
+
+            // Sembunyikan penghadang overlay
+            welcomeOverlay.classList.add("opacity-0", "pointer-events-none");
+            document.body.classList.remove("no-scroll");
+        });
+
+        // Tindakan butang kawalan manual Play/Pause
+        playPauseBtn.addEventListener("click", () => {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                playIcon.className = "fas fa-pause text-xs";
+                musicDisc.classList.add("spinning");
+            } else {
+                bgMusic.pause();
+                playIcon.className = "fas fa-play text-xs pl-0.5";
+                musicDisc.classList.remove("spinning");
+            }
+        });
+
+        // COUNTDOWN TIMER
+        const targetDate = new Date("Aug 8, 2026 09:00:00").getTime();
         const countdownInterval = setInterval(function() {
             const now = new Date().getTime();
             const difference = targetDate - now;
@@ -296,35 +316,11 @@
             }
         }, 1000);
 
-        // SALIN NOMBOR TELEFON
         function copyNumber(number) {
             navigator.clipboard.writeText(number).then(() => {
                 alert("Nombor telefon berjaya disalin: " + number);
-            }).catch(err => {
-                console.error('Gagal menyalin nombor: ', err);
             });
         }
-
-        // KAWALAN AUDIO INTERAKTIF (Lagu Latar)
-        const bgMusic = document.getElementById("bgMusic");
-        const playPauseBtn = document.getElementById("playPauseBtn");
-        const playIcon = document.getElementById("playIcon");
-        const musicDisc = document.getElementById("musicDisc");
-
-        playPauseBtn.addEventListener("click", () => {
-            if (bgMusic.paused) {
-                bgMusic.play().then(() => {
-                    playIcon.className = "fas fa-pause text-xs";
-                    musicDisc.classList.add("spinning");
-                }).catch(error => {
-                    console.log("Audio play blocked by browser policy. User interaction required.");
-                });
-            } else {
-                bgMusic.pause();
-                playIcon.className = "fas fa-play text-xs pl-0.5";
-                musicDisc.classList.remove("spinning");
-            }
-        });
     </script>
 </body>
 </html>
